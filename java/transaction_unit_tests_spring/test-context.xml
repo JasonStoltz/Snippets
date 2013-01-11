@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/mvc
+          http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+          http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+          
+  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    <constructor-arg ref="dataSource"/>
+  </bean>         
+          
+  <!-- Had to rename "dataSoruce" to have prefix of "test" since they already exist.
+  The more ideal solution would be to separate out the original definition from applicationContext.xml to
+  another file, and not load that file in the test context, so that we can load these instead. -->
+  <!-- SingleConnectionDataSource required for Spring's transaction management to work. We need all
+  db interaction to occur on the same connection. -->
+  <bean id="dataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
+    <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+    <property name="url" value="jdbc:oracle:thin:@lccdb176:1521:dcdo" />
+    <property name="username" value="wbpd"/>
+    <property name="password" value="wbpd"/>
+    <!-- Suppress close because most of our DAOs open a connection then close it right away, which
+    interfers with Spring's transaction rollback. -->
+    <property name="suppressClose" value="true"/>
+  </bean>
+  
+  <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource" />
+  </bean>
+
+</beans>
