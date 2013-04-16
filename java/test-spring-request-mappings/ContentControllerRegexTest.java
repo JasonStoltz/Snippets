@@ -4,6 +4,7 @@ import com.armstrong.www.residential.ceilings.web.controllers.ContentController;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 
@@ -152,18 +153,29 @@ public class ContentControllerRegexTest {
 
         ContentControllerMock controller = new ContentControllerMock();
 
-        req.setRequestURI("/en-us/whatever.html");
-        handler.handle(req, res, controller);
+        {
+            req.setRequestURI("/en-us/whatever.html");
+            ModelAndView view = handler.handle(req, res, controller);
+            System.out.println(view.getViewName());
+            assertEquals("whatever.html", view.getViewName());
+        }
 
-        req.setRequestURI("/en-us/whatever.html");
-        handler.handle(req, res, controller);
-
-        req.setRequestURI("/en-us/content/whatever.html");
-        handler.handle(req, res, controller);
+        {
+            req.setRequestURI("/es-us/whatever.html");
+            ModelAndView view = handler.handle(req, res, controller);
+            System.out.println(view.getViewName());
+            assertEquals("whatever.html", view.getViewName());
+        }
+        {
+            req.setRequestURI("/en-us/content/whatever.html");
+            ModelAndView view = handler.handle(req, res, controller);
+            System.out.println(view.getViewName());
+            assertEquals("content/whatever.html", view.getViewName());
+        }
 
         try {
             req.setRequestURI("/en-us/content/whatever.asp");
-            handler.handle(req, res, controller);
+            ModelAndView view = handler.handle(req, res, controller);
             fail();
         } catch (Throwable e) {
             assertTrue(e instanceof NoSuchRequestHandlingMethodException);
