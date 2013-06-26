@@ -90,14 +90,14 @@ define(
 
        so if you did this:
        require("tracking", function(tracking){
-        awi.tracking = tracking;
-        tracking.setup().rememberLastLinkClicked("awi.tracking", /\.pdf/);
+        namespace.tracking = tracking;
+        tracking.setup().rememberLastLinkClicked("namespace.tracking", /\.pdf/);
        });
 
        you could do do:
 
-       s_awiAddPlugin(function (s) {
-        awi.tracking.lastLinkClicked; //instead of s.eo
+       omnitureAddPluginFunction(function (s) {
+       namespace.tracking.lastLinkClicked; //instead of s.eo
        });
 
        */

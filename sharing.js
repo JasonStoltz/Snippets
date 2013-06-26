@@ -15,8 +15,8 @@
   <script>
     addthis_config = {
       data_track_clickback: true,
-      data_ga_property: 'UA-1070615-1',
-      pubid: '${addthis_account}'
+      data_ga_property: 'GA-account-number',
+      pubid: 'add-this-account-number'
     };
     addthis_share = {};
   </script>
